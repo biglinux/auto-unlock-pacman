@@ -1,6 +1,5 @@
 [Unit]
-DefaultDependencies=no
-After=systemd-fsck-root.service
+After=local-fsck.target
 
 [Service]
 Type=oneshot
