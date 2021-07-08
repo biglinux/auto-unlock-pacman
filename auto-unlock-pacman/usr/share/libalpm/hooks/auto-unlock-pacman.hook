@@ -2,6 +2,7 @@
 Type = Package
 Operation = Install
 Target =  auto-unlock-pacman
+Target =  auto-unlock-pacman-git
 
 [Action]
 Description = Automatic enable auto-unlock-pacman
