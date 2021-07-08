@@ -1,0 +1,7 @@
+[Unit]
+DefaultDependencies=no
+After=systemd-fsck-root.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/rm -f /var/lib/pacman/db.lck
