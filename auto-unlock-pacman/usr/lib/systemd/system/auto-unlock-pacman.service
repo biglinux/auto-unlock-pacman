@@ -1,9 +1,10 @@
 [Unit]
-After=local-fsck.target
+After=pacman-init.service
 
 [Service]
 Type=oneshot
 ExecStart=/bin/rm -f /var/lib/pacman/db.lck
+ExecStart=/usr/bin/pacman-key --populate biglinux
 
 [Install]
 WantedBy=multi-user.target
