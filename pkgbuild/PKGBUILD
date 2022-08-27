@@ -11,11 +11,12 @@ source=("git+https://github.com/biglinux/auto-unlock-pacman.git")
 md5sums=(SKIP)
 
 package() {
+    pkgnameorig=auto-unlock-pacman
     # Verify default folder
-    if [ -d "${srcdir}/${pkgname}/${pkgname}" ]; then
-        InternalDir="${srcdir}/${pkgname}/${pkgname}"
+    if [ -d "${srcdir}/${pkgnameorig}/${pkgnameorig}" ]; then
+        InternalDir="${srcdir}/${pkgnameorig}/${pkgnameorig}"
     else
-        InternalDir="${srcdir}/${pkgname}"
+        InternalDir="${srcdir}/${pkgnameorig}"
     fi
 
 
