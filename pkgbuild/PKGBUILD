@@ -6,7 +6,7 @@ pkgrel=$(date +%H%M)
 arch=('any')
 license=('GPL')
 url="https://github.com/biglinux/auto-unlock-pacman"
-pkgdesc="Preload some files to make system faster"
+pkgdesc="Fixes to prevent problem with pacman lock and keys"
 source=("git+https://github.com/biglinux/auto-unlock-pacman.git")
 md5sums=(SKIP)
 
