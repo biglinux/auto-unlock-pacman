@@ -3,8 +3,8 @@ After=pacman-init.service
 
 [Service]
 Type=oneshot
-ExecStart=/bin/rm -f /var/lib/pacman/db.lck
 ExecStart=/usr/bin/pacman-key --populate archlinux manjaro biglinux
+ExecStart=/bin/rm -f /var/lib/pacman/db.lck
 
 [Install]
 WantedBy=multi-user.target
