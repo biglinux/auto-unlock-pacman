@@ -5,6 +5,7 @@
 
 pacman-key --init
 if [ "$?" != "0" ]; then
+    > /var/lib/pacman/db.lck
     rm -R /etc/pacman.d/gnupg
     mkdir -p /etc/pacman.d/gnupg
 echo 'no-greeting
@@ -21,10 +22,11 @@ keyserver hkps://keys.openpgp.org
 keyserver hkps://keyserver.ubuntu.com' > /etc/pacman.d/gnupg/gpg.conf
     pacman-key --init
 fi
-
+> /var/lib/pacman/db.lck
 pacman-key --populate archlinux manjaro biglinux
 
 if [ "$?" != "0" ]; then
+    > /var/lib/pacman/db.lck
     rm -R /etc/pacman.d/gnupg
     mkdir -p /etc/pacman.d/gnupg
 echo 'no-greeting
