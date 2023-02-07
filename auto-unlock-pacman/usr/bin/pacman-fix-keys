@@ -1,0 +1,42 @@
+#!/bin/bash
+
+
+pacman-key --init
+if [ "$?" != "0" ]; then
+    rm -R /etc/pacman.d/gnupg
+    mkdir -p /etc/pacman.d/gnupg
+echo 'no-greeting
+no-permission-warning
+lock-never
+keyserver-options timeout=10
+keyserver-options import-clean
+keyserver-options no-self-sigs-only
+keyserver hkp://keyserver.ubuntu.com:80
+keyserver hkps://pgp.mit.edu
+keyserver hkps://keyserver.pgp.com
+keyserver hkps://hkps.pool.sks-keyservers.net
+keyserver hkps://keys.openpgp.org
+keyserver hkps://keyserver.ubuntu.com' > /etc/pacman.d/gnupg/gpg.conf
+    pacman-key --init
+fi
+
+pacman-key --populate archlinux manjaro biglinux
+
+if [ "$?" != "0" ]; then
+    rm -R /etc/pacman.d/gnupg
+    mkdir -p /etc/pacman.d/gnupg
+echo 'no-greeting
+no-permission-warning
+lock-never
+keyserver-options timeout=10
+keyserver-options import-clean
+keyserver-options no-self-sigs-only
+keyserver hkp://keyserver.ubuntu.com:80
+keyserver hkps://pgp.mit.edu
+keyserver hkps://keyserver.pgp.com
+keyserver hkps://hkps.pool.sks-keyservers.net
+keyserver hkps://keys.openpgp.org
+keyserver hkps://keyserver.ubuntu.com' > /etc/pacman.d/gnupg/gpg.conf
+    pacman-key --init
+    pacman-key --populate archlinux manjaro biglinux
+fi

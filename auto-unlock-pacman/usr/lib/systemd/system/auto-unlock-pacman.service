@@ -3,8 +3,7 @@ After=pacman-init.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/pacman-key --init
-ExecStart=/usr/bin/pacman-key --populate archlinux manjaro biglinux
+ExecStart=/usr/bin/pacman-fix-keys
 ExecStart=/bin/rm -f /var/lib/pacman/db.lck
 
 [Install]
