@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Lock pacman
+> /var/lib/pacman/db.lck
 
 pacman-key --init
 if [ "$?" != "0" ]; then
@@ -40,3 +42,6 @@ keyserver hkps://keyserver.ubuntu.com' > /etc/pacman.d/gnupg/gpg.conf
     pacman-key --init
     pacman-key --populate archlinux manjaro biglinux
 fi
+
+# Unlock pacman
+rm /var/lib/pacman/db.lck
