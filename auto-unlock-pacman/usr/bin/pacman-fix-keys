@@ -14,6 +14,10 @@ if [[ -s $stamp && $(<"$stamp") == "$keyrings" && -s $gnupg/pubring.gpg && -s $g
     rm -f /var/lib/pacman/db.lck
     exit 0
 fi
+# Gone before the keyring is touched: a rebuild cut short (power lost after
+# --init, before --populate) leaves databases gpg can read without the
+# distribution's keys, and the next boot must not accept them.
+rm -f "$stamp"
 
 # Lock file to avoid conflicts
 > /var/lib/pacman/db.lck
