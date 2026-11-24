@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# Nothing runs pacman this early in the boot, so a lock left here is stale.
+# The keyring is rebuilt only when the keyring files differ from the ones the
+# last successful rebuild saw (name, size and modification time, so a
+# downgrade counts too), or when gpg cannot read the key and trust databases:
+# gpg needs many seconds of CPU on an old machine, and this runs during the
+# login.
+stamp=/var/lib/auto-unlock-pacman/keyring-populated
+gnupg=/etc/pacman.d/gnupg
+keyrings=$(stat -c '%n %s %Y' /usr/share/pacman/keyrings/* 2>/dev/null)
+if [[ -s $stamp && $(<"$stamp") == "$keyrings" && -s $gnupg/pubring.gpg && -s $gnupg/trustdb.gpg ]] &&
+    pacman-key --list-keys >/dev/null 2>&1; then
+    rm -f /var/lib/pacman/db.lck
+    exit 0
+fi
+# Gone before the keyring is touched: a rebuild cut short (power lost after
+# --init, before --populate) leaves databases gpg can read without the
+# distribution's keys, and the next boot must not accept them.
+rm -f "$stamp"
+
 # Lock file to avoid conflicts
 > /var/lib/pacman/db.lck
 
@@ -41,8 +60,9 @@ fi
 
 # Populate the pacman keyring with keys from the generated key list
 pacman-key --populate $key_list
+populated=$?
 
-if [ "$?" != "0" ]; then
+if [ "$populated" != "0" ]; then
     # If population fails, reset the keyring and retry
     > /var/lib/pacman/db.lck
     rm -R /etc/pacman.d/gnupg
@@ -61,6 +81,12 @@ keyserver hkps://keys.openpgp.org
 keyserver hkps://keyserver.ubuntu.com' > /etc/pacman.d/gnupg/gpg.conf
     pacman-key --init
     pacman-key --populate $key_list
+    populated=$?
+fi
+
+# A rebuild that failed is tried again at the next boot.
+if [ "$populated" = "0" ]; then
+    mkdir -p "${stamp%/*}" && printf '%s\n' "$keyrings" >"$stamp"
 fi
 
 # Remove the pacman database lock file to unlock pacman
